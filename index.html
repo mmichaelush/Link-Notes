@@ -1,9 +1,16 @@
 <!doctype html>
+<!--
+  מקשר הערות אוטומטי
+  קובץ יחיד לעבודה מקומית בדפדפן.
+  המבנה מחולק לשלושה אזורים עיקריים: ממשק, עיצוב, ולוגיקת יצירת links.json.
+  בעת תחזוקה עתידית מומלץ לשמור על עקביות בין מזהי השדות בממשק לבין המפתחות שנוצרים ב-JSON.
+-->
 <html lang="he" dir="rtl">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>מקשר הערות אוטומטי</title>
+  <link rel="icon" type="image/svg+xml" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><text y=".9em" font-size="52">🔗</text></svg>' />
   <style>
     :root{
       --bg:#f6f7fb;
@@ -315,6 +322,107 @@
       opacity:1;
       transform:translateY(0);
     }
+    .footerActions{
+      margin-top:16px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .footerNote{
+      color:var(--muted);
+      font-size:12px;
+      text-align:center;
+    }
+
+    details.advancedSettings{
+      margin-top:14px;
+      border:1px solid var(--panelBorder);
+      border-radius:14px;
+      background:#fff;
+      overflow:hidden;
+    }
+
+    details.advancedSettings > summary{
+      list-style:none;
+      cursor:pointer;
+      padding:12px 14px;
+      font-weight:800;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      user-select:none;
+    }
+
+    details.advancedSettings > summary::-webkit-details-marker{display:none}
+    details.advancedSettings > summary::before{content:"⚙️ הגדרות מתקדמות"}
+    details.advancedSettings > summary::after{content:"▾";font-size:12px;color:var(--muted);transition:transform .18s ease}
+    details.advancedSettings[open] > summary::after{transform:rotate(180deg)}
+
+    .advancedBody{
+      padding:14px;
+      border-top:1px solid var(--line);
+      background:#fcfcff;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:12px;
+    }
+
+    .advancedInner{
+      width:min(100%, 760px);
+      margin-inline:auto;
+    }
+
+    .advancedGrid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:14px;
+      align-items:start;
+      width:100%;
+    }
+
+    .advancedGrid .fRow{
+      text-align:center;
+    }
+
+    .advancedGrid .hint{
+      text-align:center;
+    }
+
+    .checkRow{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      flex-wrap:wrap;
+      padding:0;
+      text-align:center;
+    }
+
+    .checkRow input[type="checkbox"]{
+      width:16px;
+      height:16px;
+      accent-color:var(--accent);
+      cursor:pointer;
+      flex:0 0 auto;
+    }
+
+    .checkRow label{
+      margin:0;
+      cursor:pointer;
+      font-weight:600;
+      font-size:14px;
+      line-height:1.35;
+    }
+
+    @media (max-width:700px){
+      .advancedGrid{grid-template-columns:1fr;}
+    }
+
   </style>
 </head>
 
@@ -362,18 +470,34 @@
                 <label for="tagNotes">תג בהערות (ברירת מחדל: <span class="mono">sup</span>)</label>
                 <input id="tagNotes" type="text" value="sup" spellcheck="false" autocomplete="off" />
               </div>
-
-              <div class="fRow">
-                <label for="heRef2"><span class="mono">heRef_2</span> (כותרת ההערה)</label>
-                <input id="heRef2" type="text" value="הערות" spellcheck="false" autocomplete="off" />
-              </div>
-
-              <div class="fRow" style="grid-column:1 / -1">
-                <label for="path2">path_2 (שם הקובץ / נתיב ב):</label>
-                <input id="path2" type="text" value="" spellcheck="false" autocomplete="off" placeholder="שם קובץ ההערות" />
-                <div class="hint" style="margin-top:2px">ברירת מחדל: שם קובץ ההערות שנטען</div>
-              </div>
             </div>
+
+            <details class="advancedSettings">
+              <summary></summary>
+              <div class="advancedBody">
+                <div class="advancedInner">
+                  <div class="checkRow">
+                    <input id="commentaryMode" type="checkbox" checked />
+                    <label for="commentaryMode">הגדר הערות כמפרש ולא כקישור</label>
+                  </div>
+                </div>
+
+                <div class="advancedInner">
+                  <div class="advancedGrid">
+                    <div class="fRow">
+                      <label for="heRef2"><span class="mono">heRef_2</span> (כותרת ההערה)</label>
+                      <input id="heRef2" type="text" value="הערות" spellcheck="false" autocomplete="off" />
+                    </div>
+
+                    <div class="fRow">
+                      <label for="path2">path_2 (שם הקובץ / נתיב ב):</label>
+                      <input id="path2" type="text" value="" spellcheck="false" autocomplete="off" placeholder="שם קובץ ההערות" />
+                      <div class="hint" style="margin-top:2px">ברירת מחדל: שם קובץ ההערות שנטען</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </details>
           </div>
 
           <div class="row center stackOnMobile" style="margin-top:14px">
@@ -401,6 +525,12 @@
           <pre id="out">[]</pre>
         </div>
       </section>
+
+      <div class="footerActions">
+        <button id="btnOffline" class="ghost">💾 הורדת הקובץ לעבודה אופליין</button>
+      </div>
+      <div class="footerNote">הורדה זו מורידה ושומרת עותק עדכני ונקי של הדף לשימוש מקומי ללא חיבור לרשת, ללא תוכן JSON שנוצר במסך.</div>
+
     </div>
   </div>
 
@@ -410,6 +540,15 @@
 (() => {
   "use strict";
 
+  /*
+    לוגיקת הקובץ מחולקת כך:
+    1. אחיזת אלמנטים ומצב עבודה.
+    2. פונקציות עזר לניקוי, נרמול וזיהוי הפניות.
+    3. יצירת התאמות בין הספר להערות והפקת JSON.
+    4. פעולות ממשק: טעינת קבצים, הורדה, העתקה ועותק אופליין.
+  */
+
+  /* אלמנטים קבועים מהממשק */
   const els = {
     btnBook: document.getElementById("btnBook"),
     btnNotes: document.getElementById("btnNotes"),
@@ -420,15 +559,18 @@
     btnMake: document.getElementById("btnMake"),
     btnDownload: document.getElementById("btnDownload"),
     btnCopy: document.getElementById("btnCopy"),
+    btnOffline: document.getElementById("btnOffline"),
     out: document.getElementById("out"),
     path2: document.getElementById("path2"),
     tagBook: document.getElementById("tagBook"),
     tagNotes: document.getElementById("tagNotes"),
     heRef2: document.getElementById("heRef2"),
+    commentaryMode: document.getElementById("commentaryMode"),
     makeStatus: document.getElementById("makeStatus"),
     toast: document.getElementById("toast"),
   };
 
+  /* מצב עבודה הנשמר לאורך חיי העמוד */
   const state = {
     bookText: "",
     notesText: "",
@@ -437,6 +579,7 @@
     lastJsonText: "[]",
   };
 
+  /* לוגים מרוכזים למסוף לצורך בקרה ותחזוקה */
   const logger = (() => {
     const ns = "🔗 מקשר הערות אוטומטי";
     const time = () => new Date().toLocaleTimeString("he-IL", { hour12: false });
@@ -490,6 +633,7 @@
     };
   })();
 
+  /* פונקציות עזר כלליות לממשק ולטקסט */
   function setStatus(rootEl, text, cls) {
     rootEl.className = "status" + (cls ? (" " + cls) : "");
     const spanText = rootEl.querySelector("span:last-child");
@@ -569,6 +713,7 @@
     setTimeout(() => URL.revokeObjectURL(url), 1200);
   }
 
+  /* נרמול הפניות ומספור, כולל ספרות ואותיות עבריות */
   function stripWrapperChars(token) {
     let out = String(token || "").trim();
     const wrapperChars = `"'״׳()[]{}<>«»`;
@@ -576,6 +721,37 @@
       out = out.slice(1, -1).trim();
     }
     return out;
+  }
+
+  function normalizeHebrewNumeralLetters(s) {
+    return String(s || "")
+      .replace(/["'״׳\u05F3\u05F4]/g, "")
+      .replace(/\s+/g, "")
+      .replace(/[־-]/g, "")
+      .replace(/ך/g, "כ")
+      .replace(/ם/g, "מ")
+      .replace(/ן/g, "נ")
+      .replace(/ף/g, "פ")
+      .replace(/ץ/g, "צ");
+  }
+
+  function hebrewLettersToNumber(rawLetters) {
+    const s = normalizeHebrewNumeralLetters(rawLetters);
+    if (!s || /[^אבגדהוזחטיכלמנסעפצקרשת]/.test(s)) return null;
+
+    const map = {
+      "א": 1, "ב": 2, "ג": 3, "ד": 4, "ה": 5, "ו": 6, "ז": 7, "ח": 8, "ט": 9,
+      "י": 10, "כ": 20, "ל": 30, "מ": 40, "נ": 50, "ס": 60, "ע": 70, "פ": 80, "צ": 90,
+      "ק": 100, "ר": 200, "ש": 300, "ת": 400
+    };
+
+    let total = 0;
+    for (const ch of s) {
+      if (!map[ch]) return null;
+      total += map[ch];
+    }
+
+    return total > 0 ? total : null;
   }
 
   function normalizeRefToken(rawToken) {
@@ -586,14 +762,21 @@
 
     if (!token) return null;
 
-    const m = token.match(/([^\d]*)(\d+)([^\d]*)/);
+    const m = token.match(/^([^0-9א-תךםןףץ]*)([0-9]+|[א-תךםןףץ"'״׳\u05F3\u05F4-]+)([^0-9א-תךםןףץ]*)$/);
     if (!m) return null;
 
     const prefix = m[1] || "";
-    const digits = m[2] || "";
+    const core = m[2] || "";
     const suffix = m[3] || "";
 
-    const num = parseInt(digits, 10);
+    let num = null;
+
+    if (/^\d+$/.test(core)) {
+      num = parseInt(core, 10);
+    } else {
+      num = hebrewLettersToNumber(core);
+    }
+
     if (!Number.isFinite(num)) return null;
 
     const key = `${prefix}${num}${suffix}`;
@@ -631,7 +814,7 @@
       const rawInside = closeMatch ? tail.slice(0, closeMatch.index) : tail.slice(0, 220);
       const insidePlain = rawInside.replace(/<[^>]*>/g, " ").trim();
 
-      const tokenMatch = insidePlain.match(/([^\d\s<>\u200e\u200f\u202a-\u202e]*\d+[^\d\s<>\u200e\u200f\u202a-\u202e]*)/);
+      const tokenMatch = insidePlain.match(/([^0-9א-תךםןףץ\s<>\u200e\u200f\u202a-\u202e]*?(?:\d+|[א-תךםןףץ"'״׳\u05F3\u05F4-]+)[^0-9א-תךםןףץ\s<>\u200e\u200f\u202a-\u202e]*?)/);
       if (tokenMatch && tokenMatch[1]) {
         const ref = normalizeRefToken(tokenMatch[1]);
         if (ref) refs.push(ref);
@@ -672,6 +855,7 @@
     return out;
   }
 
+  /* בניית מבני פרקים והתאמות */
   function splitNotesIntoChapters(noteOccs) {
     if (!noteOccs.length) return [];
 
@@ -801,7 +985,7 @@
     return { advance: false, reason: "" };
   }
 
-  function buildLinks({ bookOccs, noteChapterInfos, heRef2, path2 }) {
+  function buildLinks({ bookOccs, noteChapterInfos, heRef2, path2, connectionType }) {
     const outArr = [];
     const missingInNotes = [];
     const chapterTransitions = [];
@@ -894,7 +1078,7 @@
           "heRef_2": heRef2,
           "path_2": path2,
           "line_index_2": noteLine,
-          "Conection Type": "commentary"
+          "Conection Type": connectionType
         });
 
         const prevCount = seenKeysInCurrentBookChapter.get(occ.key) || 0;
@@ -1166,11 +1350,14 @@
     if (!path2 && state.notesFileName) path2 = state.notesFileName;
     els.path2.value = path2;
 
+    const connectionType = els.commentaryMode.checked ? "commentary" : "";
+
     logger.info("מתחיל תהליך זיהוי וקישור", {
       תג_בספר: tagBook,
       תג_בהערות: tagNotes,
       heRef_2: heRef2,
-      path_2: path2
+      path_2: path2,
+      Conection_Type: connectionType || "(ריק)"
     });
 
     const bookOccs = extractOccurrences(bookLines, tagBook, "book");
@@ -1205,7 +1392,8 @@
       bookOccs,
       noteChapterInfos,
       heRef2,
-      path2
+      path2,
+      connectionType
     });
 
     state.lastJsonText = JSON.stringify(outArr, null, 2);
@@ -1267,6 +1455,62 @@
     }
   }
 
+  /* יצירת עותק HTML נקי לעבודה אופליין */
+  function buildOfflineHtml() {
+    const clone = document.documentElement.cloneNode(true);
+
+    const out = clone.querySelector("#out");
+    if (out) out.textContent = "[]";
+
+    const makeStatus = clone.querySelector("#makeStatus span:last-child");
+    if (makeStatus) makeStatus.textContent = "טען קבצים כדי להתחיל";
+
+    const bookStatus = clone.querySelector("#bookStatus span:last-child");
+    if (bookStatus) bookStatus.textContent = "ספר: לא נטען";
+
+    const notesStatus = clone.querySelector("#notesStatus span:last-child");
+    if (notesStatus) notesStatus.textContent = "הערות: לא נטען";
+
+    const path2 = clone.querySelector("#path2");
+    if (path2) path2.value = "";
+
+    const fileBook = clone.querySelector("#fileBook");
+    if (fileBook) fileBook.value = "";
+
+    const fileNotes = clone.querySelector("#fileNotes");
+    if (fileNotes) fileNotes.value = "";
+
+    const btnDownload = clone.querySelector("#btnDownload");
+    if (btnDownload) btnDownload.setAttribute("disabled", "disabled");
+
+    const btnCopy = clone.querySelector("#btnCopy");
+    if (btnCopy) btnCopy.setAttribute("disabled", "disabled");
+
+    const toast = clone.querySelector("#toast");
+    if (toast) {
+      toast.textContent = "";
+      toast.className = "toast";
+    }
+
+    return "<!doctype html>\n" + clone.outerHTML;
+  }
+
+  function downloadOfflineCopy() {
+    const offlineName = "מקשר הערות אוטומטי.html";
+    const blob = new Blob([buildOfflineHtml()], { type: "text/html;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = offlineName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1200);
+    showToast("ירד עותק אופליין נקי");
+    logger.ok("הורד עותק אופליין של הדף.", { קובץ: offlineName, מצב: "ללא JSON נטען" });
+  }
+
+  /* אתחול ראשוני וחיבור אירועי הממשק */
   function init() {
     els.btnBook.addEventListener("click", () => els.fileBook.click());
     els.btnNotes.addEventListener("click", () => els.fileNotes.click());
@@ -1275,6 +1519,7 @@
     els.btnMake.addEventListener("click", makeJson);
     els.btnDownload.addEventListener("click", downloadJson);
     els.btnCopy.addEventListener("click", copyJson);
+    els.btnOffline.addEventListener("click", downloadOfflineCopy);
 
     setStatus(els.bookStatus, "ספר: לא נטען", "");
     setStatus(els.notesStatus, "הערות: לא נטען", "");
