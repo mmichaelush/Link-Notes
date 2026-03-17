@@ -1,9 +1,10 @@
 <!doctype html>
 <!--
-  מקשר הערות אוטומטי
-  קובץ יחיד לעבודה מקומית בדפדפן.
-  המבנה מחולק לשלושה אזורים עיקריים: ממשק, עיצוב, ולוגיקת יצירת links.json.
-  בעת תחזוקה עתידית מומלץ לשמור על עקביות בין מזהי השדות בממשק לבין המפתחות שנוצרים ב-JSON.
+  ========================================================
+  מקשר הערות אוטומטי - כלי יחיד (Single File Application)
+  ========================================================
+  הקובץ כולל את כל ממשק המשתמש (HTML), העיצוב (CSS) והלוגיקה (JavaScript).
+  הוא נבנה כך שניתן יהיה להוריד אותו ולעבוד איתו בצורה מקומית (Offline).
 -->
 <html lang="he" dir="rtl">
 <head>
@@ -12,6 +13,11 @@
   <title>מקשר הערות אוטומטי</title>
   <link rel="icon" type="image/svg+xml" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><text y=".9em" font-size="52">🔗</text></svg>' />
   <style>
+    /* 
+      ========================
+      משתני עיצוב גלובליים
+      ========================
+    */
     :root{
       --bg:#f6f7fb;
       --card:#ffffff;
@@ -43,6 +49,11 @@
 
     .wrap{max-width:980px;margin:0 auto}
 
+    /* 
+      ========================
+      אזור הכותרת (Hero)
+      ========================
+    */
     .hero{
       background:var(--card);
       border:1px solid var(--line);
@@ -64,7 +75,7 @@
 
     .heroTitleRow h1{
       margin:0;
-      font-size:28px;
+      font-size:34px; /* טקסט מוגדל */
       font-weight:900;
       letter-spacing:.2px;
       direction:rtl;
@@ -84,7 +95,7 @@
     .hero p{
       margin:0;
       color:var(--muted);
-      font-size:13.5px;
+      font-size:16px; /* טקסט מוגדל */
       max-width:860px;
       margin-inline:auto;
     }
@@ -96,8 +107,13 @@
     }
 
     .hero a:hover{ text-decoration:underline; }
-    .hero a.smallLink{ font-size:12.5px; font-weight:900; }
+    .hero a.smallLink{ font-size:15px; font-weight:900; }
 
+    /* 
+      ========================
+      מבנה כרטיסיות
+      ========================
+    */
     .grid{
       display:grid;
       grid-template-columns:1fr;
@@ -142,11 +158,16 @@
       input[type="text"]{min-width:0;width:100%}
       .rightTools{width:100%;justify-content:center}
       .hero{padding:16px 14px}
-      .heroTitleRow h1{font-size:24px}
+      .heroTitleRow h1{font-size:28px} /* התאמה למובייל */
     }
 
     .hint{color:var(--muted);font-size:12px}
 
+    /* 
+      ========================
+      עיצוב כפתורים ושדות קלט
+      ========================
+    */
     button{
       cursor:pointer;
       padding:10px 14px;
@@ -174,6 +195,18 @@
     .primary:hover{background:var(--accent2);border-color:var(--accent2)}
     .ghost{background:#fff}
 
+    /* כפתור בולט להורדת אופליין */
+    .btn-offline {
+      background: #f0fdf4;
+      border-color: #86efac;
+      color: #166534;
+      font-weight: 700;
+    }
+    .btn-offline:hover {
+      background: #dcfce7;
+      border-color: #4ade80;
+    }
+
     .rightTools{
       display:flex;
       gap:10px;
@@ -196,6 +229,30 @@
       box-shadow:0 0 0 3px rgba(37,99,235,.12);
     }
 
+    select.styledSelect {
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      width: 100%;
+      max-width: 320px;
+      cursor: pointer;
+    }
+    
+    select.styledSelect:focus {
+      border-color: rgba(37,99,235,.5);
+      box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+    }
+
+    /* 
+      ========================
+      אזור הגדרות והגדרות מתקדמות
+      ========================
+    */
     .miniPanel{
       width:100%;
       max-width:920px;
@@ -284,6 +341,7 @@
       margin-top:4px;
     }
 
+    /* אזור התצוגה של פלט ה-JSON */
     pre{
       margin:0;
       padding:14px 14px;
@@ -300,6 +358,7 @@
       text-align:left;
     }
 
+    /* התראה צפה (Toast) */
     .toast{
       position:fixed;
       inset-inline-start:24px;
@@ -322,6 +381,12 @@
       opacity:1;
       transform:translateY(0);
     }
+
+    /* 
+      ========================
+      אזור פוטר וקרדיטים
+      ========================
+    */
     .footerActions{
       margin-top:16px;
       display:flex;
@@ -333,10 +398,35 @@
 
     .footerNote{
       color:var(--muted);
-      font-size:12px;
+      font-size:14px; /* טקסט מוגדל */
       text-align:center;
+      margin-top: 8px;
     }
 
+    .footerDivider {
+      margin: 32px 0 16px 0;
+      border: none;
+      border-top: 1px solid var(--line);
+    }
+
+    .footerCredits {
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .footerCredits a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .footerCredits a:hover {
+      text-decoration: underline;
+    }
+
+    /* הגדרות מתקדמות (Accordion) */
     details.advancedSettings{
       margin-top:14px;
       border:1px solid var(--panelBorder);
@@ -393,32 +483,6 @@
       text-align:center;
     }
 
-    .checkRow{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      flex-wrap:wrap;
-      padding:0;
-      text-align:center;
-    }
-
-    .checkRow input[type="checkbox"]{
-      width:16px;
-      height:16px;
-      accent-color:var(--accent);
-      cursor:pointer;
-      flex:0 0 auto;
-    }
-
-    .checkRow label{
-      margin:0;
-      cursor:pointer;
-      font-weight:600;
-      font-size:14px;
-      line-height:1.35;
-    }
-
     @media (max-width:700px){
       .advancedGrid{grid-template-columns:1fr;}
     }
@@ -428,6 +492,8 @@
 
 <body>
   <div class="wrap">
+    
+    <!-- אזור ההסבר בראש הדף -->
     <div class="hero">
       <div class="heroTitleRow">
         <div class="icon" aria-hidden="true">🔗</div>
@@ -440,6 +506,8 @@
     </div>
 
     <div class="grid">
+      
+      <!-- אזור טעינת הקבצים והגדרות -->
       <section class="card">
         <div class="hd"><b>קלט</b></div>
         <div class="bd">
@@ -475,10 +543,36 @@
             <details class="advancedSettings">
               <summary></summary>
               <div class="advancedBody">
-                <div class="advancedInner">
-                  <div class="checkRow">
-                    <input id="commentaryMode" type="checkbox" checked />
-                    <label for="commentaryMode">הגדר הערות כמפרש ולא כקישור</label>
+                <div class="advancedInner" style="text-align: center;">
+                  <div class="fRow" style="align-items: center;">
+                    <label for="connectionTypeSelect" style="font-size: 14px;">הגדר את ההערות כ:</label>
+                    <select id="connectionTypeSelect" class="styledSelect">
+                      <option value="footnotes" selected>הערות שוליים</option>
+                      <option value="none">לא מוגדר</option>
+                      <option value="commentary">פירוש</option>
+                      <option value="explication">ביאור</option>
+                      <option value="reference">הפניה</option>
+                      <option value="parshanut">פרשנות</option>
+                      <option value="linker">מקשר</option>
+                      <option value="super_commentary">פירוש על פירוש</option>
+                      <option value="quotation">ציטוט</option>
+                      <option value="quotation_auto">ציטוט אוטומטי</option>
+                      <option value="quotation_auto_tanakh">ציטוט אוטומטי מהתנ״ך</option>
+                      <option value="related">קשור</option>
+                      <option value="related passage">קטע קשור</option>
+                      <option value="summary">סיכום</option>
+                      <option value="targum">תרגום</option>
+                      <option value="allusion">רמז</option>
+                      <option value="law">הלכה</option>
+                      <option value="midrash">מדרש</option>
+                      <option value="mishnah in talmud">משנה בתלמוד</option>
+                      <option value="liturgy">ליטורגיה (נוסח תפילה)</option>
+                      <option value="dibur_hamatchil">דיבור המתחיל</option>
+                      <option value="mesorat hashas">מסורת הש״ס</option>
+                      <option value="ein mishpat">עין משפט</option>
+                      <option value="ein mishpat / ner mitsvah">עין משפט / נר מצווה</option>
+                      <option value="sifrei mitzvot">ספרי מצוות</option>
+                    </select>
                   </div>
                 </div>
 
@@ -513,6 +607,7 @@
         </div>
       </section>
 
+      <!-- אזור הצגת התוצאה -->
       <section class="card">
         <div class="hd">
           <b>פלט</b>
@@ -526,10 +621,16 @@
         </div>
       </section>
 
+      <!-- פוטר פעולות נוספות -->
       <div class="footerActions">
-        <button id="btnOffline" class="ghost">💾 הורדת הקובץ לעבודה אופליין</button>
+        <button id="btnOffline" class="btn-offline">💾 הורדת הקובץ לעבודה אופליין</button>
       </div>
       <div class="footerNote">הורדה זו מורידה ושומרת עותק עדכני ונקי של הדף לשימוש מקומי ללא חיבור לרשת, ללא תוכן JSON שנוצר במסך.</div>
+      
+      <hr class="footerDivider" />
+      <div class="footerCredits">
+        לפרטים נוספים על הכלי, שאלות, הערות או הצעות לשיפור הכנסו <a href="https://otzaria.org/forum/post/10170" target="_blank" rel="noopener noreferrer">לפורום</a>
+      </div>
 
     </div>
   </div>
@@ -541,14 +642,16 @@
   "use strict";
 
   /*
-    לוגיקת הקובץ מחולקת כך:
-    1. אחיזת אלמנטים ומצב עבודה.
-    2. פונקציות עזר לניקוי, נרמול וזיהוי הפניות.
-    3. יצירת התאמות בין הספר להערות והפקת JSON.
-    4. פעולות ממשק: טעינת קבצים, הורדה, העתקה ועותק אופליין.
+    ========================================================================
+    לוגיקת הקובץ מחולקת לארבעה שלבים עיקריים:
+    1. אחיזת אלמנטים ומצב עבודה: קישור ל-DOM וניהול משתני העמוד.
+    2. פונקציות עזר: ניקוי טקסט, נרמול ספרות ואותיות עבריות, וזיהוי הפניות.
+    3. בניית המבנה: חלוקת ההערות לפרקים ויצירת התאמות (לינקים) מול הספר.
+    4. אירועי ממשק: טעינת קבצים, יצירת ה-JSON, שמירה והעתקה ללוח.
+    ========================================================================
   */
 
-  /* אלמנטים קבועים מהממשק */
+  /* חלק 1: אלמנטים קבועים מהממשק ומצב הריצה */
   const els = {
     btnBook: document.getElementById("btnBook"),
     btnNotes: document.getElementById("btnNotes"),
@@ -565,12 +668,11 @@
     tagBook: document.getElementById("tagBook"),
     tagNotes: document.getElementById("tagNotes"),
     heRef2: document.getElementById("heRef2"),
-    commentaryMode: document.getElementById("commentaryMode"),
+    connectionTypeSelect: document.getElementById("connectionTypeSelect"),
     makeStatus: document.getElementById("makeStatus"),
     toast: document.getElementById("toast"),
   };
 
-  /* מצב עבודה הנשמר לאורך חיי העמוד */
   const state = {
     bookText: "",
     notesText: "",
@@ -579,7 +681,7 @@
     lastJsonText: "[]",
   };
 
-  /* לוגים מרוכזים למסוף לצורך בקרה ותחזוקה */
+  /* מערכת לוגים מרוכזת למסוף מפתחים (F12) לבקרה ודיבוג נח */
   const logger = (() => {
     const ns = "🔗 מקשר הערות אוטומטי";
     const time = () => new Date().toLocaleTimeString("he-IL", { hour12: false });
@@ -633,7 +735,7 @@
     };
   })();
 
-  /* פונקציות עזר כלליות לממשק ולטקסט */
+  /* חלק 2: פונקציות עזר כלליות לממשק ולטקסט */
   function setStatus(rootEl, text, cls) {
     rootEl.className = "status" + (cls ? (" " + cls) : "");
     const spanText = rootEl.querySelector("span:last-child");
@@ -798,12 +900,12 @@
 
   function extractRefsFromLineByTag(line, tagName) {
     const tag = sanitizeTagName(tagName);
-    if (!tag) return [];
+    if (!tag) return[];
 
     const openRe = new RegExp(`<\\s*${tag}\\b[^>]*>`, "gi");
     const closeAnyRe = new RegExp(`<\\s*\\/\\s*${tag}\\s*>`, "i");
 
-    const refs = [];
+    const refs =[];
     let m;
 
     while ((m = openRe.exec(line)) !== null) {
@@ -829,7 +931,7 @@
   }
 
   function extractOccurrences(lines, tagName, sideName) {
-    const out = [];
+    const out =[];
     let globalIndex = 0;
 
     for (let i = 0; i < lines.length; i++) {
@@ -855,12 +957,12 @@
     return out;
   }
 
-  /* בניית מבני פרקים והתאמות */
+  /* חלק 3: בניית מבני פרקים והתאמות בין הספר להערות */
   function splitNotesIntoChapters(noteOccs) {
     if (!noteOccs.length) return [];
 
-    const chapters = [];
-    let current = [];
+    const chapters =[];
+    let current =[];
 
     for (let i = 0; i < noteOccs.length; i++) {
       const occ = noteOccs[i];
@@ -881,11 +983,11 @@
     const keyToLine = new Map();
     const keyToAllLines = new Map();
     const seenKeys = new Set();
-    const dupEntries = [];
+    const dupEntries =[];
     let maxNum = 0;
 
     for (const occ of chapterOccs) {
-      if (!keyToAllLines.has(occ.key)) keyToAllLines.set(occ.key, []);
+      if (!keyToAllLines.has(occ.key)) keyToAllLines.set(occ.key,[]);
       keyToAllLines.get(occ.key).push(occ.lineIndex);
 
       if (seenKeys.has(occ.key)) {
@@ -954,7 +1056,7 @@
       prev &&
       prev.key !== "1"
     ) {
-      const future = [next1?.key, next2?.key, next3?.key].filter(Boolean);
+      const future =[next1?.key, next2?.key, next3?.key].filter(Boolean);
       const hasPlain2 = future.includes("2");
       const hasPlain3 = future.includes("3");
 
@@ -987,8 +1089,8 @@
 
   function buildLinks({ bookOccs, noteChapterInfos, heRef2, path2, connectionType }) {
     const outArr = [];
-    const missingInNotes = [];
-    const chapterTransitions = [];
+    const missingInNotes =[];
+    const chapterTransitions =[];
 
     if (!bookOccs.length || !noteChapterInfos.length) {
       return {
@@ -1117,12 +1219,12 @@
 
   function collectMissingInBook(noteChapterInfos, bookOccs) {
     const keysInBook = new Set(bookOccs.map(x => x.key));
-    const missingInBook = [];
+    const missingInBook =[];
 
     for (const chapterInfo of noteChapterInfos) {
       for (const key of chapterInfo.keys) {
         if (!keysInBook.has(key)) {
-          const lines = chapterInfo.keyToAllLines.get(key) || [];
+          const lines = chapterInfo.keyToAllLines.get(key) ||[];
           missingInBook.push({
             chapter: chapterInfo.chapterNo,
             key,
@@ -1174,7 +1276,7 @@
     } = info;
 
     if (outCount > 0) {
-      const warnParts = [];
+      const warnParts =[];
 
       if (missingInBook.length) {
         warnParts.push(
@@ -1278,6 +1380,7 @@
     }
   }
 
+  /* חלק 4: אירועי ממשק פעילים */
   async function handleBookFileChange() {
     const f = els.fileBook.files && els.fileBook.files[0];
     if (!f) return;
@@ -1350,7 +1453,7 @@
     if (!path2 && state.notesFileName) path2 = state.notesFileName;
     els.path2.value = path2;
 
-    const connectionType = els.commentaryMode.checked ? "commentary" : "";
+    const connectionType = els.connectionTypeSelect.value;
 
     logger.info("מתחיל תהליך זיהוי וקישור", {
       תג_בספר: tagBook,
@@ -1479,6 +1582,9 @@
 
     const fileNotes = clone.querySelector("#fileNotes");
     if (fileNotes) fileNotes.value = "";
+    
+    const connectionTypeSelect = clone.querySelector("#connectionTypeSelect");
+    if (connectionTypeSelect) connectionTypeSelect.value = "footnotes";
 
     const btnDownload = clone.querySelector("#btnDownload");
     if (btnDownload) btnDownload.setAttribute("disabled", "disabled");
